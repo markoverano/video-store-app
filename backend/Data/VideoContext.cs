@@ -41,6 +41,24 @@ namespace VideoStore.Backend.Data
                 .WithMany(c => c.VideoCategories)
                 .HasForeignKey(vc => vc.CategoryId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            SeedCategories(modelBuilder);
+        }
+
+        private static void SeedCategories(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Category>().HasData(
+                new Category { Id = 1, Name = "Action" },
+                new Category { Id = 2, Name = "Comedy" },
+                new Category { Id = 3, Name = "Drama" },
+                new Category { Id = 4, Name = "Horror" },
+                new Category { Id = 5, Name = "Sci-Fi" },
+                new Category { Id = 6, Name = "Documentary" },
+                new Category { Id = 7, Name = "Romance" },
+                new Category { Id = 8, Name = "Thriller" },
+                new Category { Id = 9, Name = "Animation" },
+                new Category { Id = 10, Name = "Fantasy" }
+            );
         }
     }
 }

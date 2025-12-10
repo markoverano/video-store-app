@@ -1,3 +1,4 @@
 backend/bin/
 backend/obj/
 backend/Properties/launchSettings.json
+.vs/
