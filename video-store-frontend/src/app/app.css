@@ -1,0 +1,58 @@
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #555;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.nav-links a:hover {
+  color: #007bff;
+}
+
+.nav-links a.active {
+  color: #007bff;
+}
+
+.upload-btn {
+  background-color: #007bff;
+  color: #ffffff !important;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+}
+
+.upload-btn:hover {
+  background-color: #0056b3;
+}
+
+.main-content {
+  flex: 1;
+  background-color: #ffffff;
+}

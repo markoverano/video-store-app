@@ -1,0 +1,12 @@
+<div class="app-container">
+  <header class="app-header">
+    <a routerLink="/home" class="logo">Video Store</a>
+    <nav class="nav-links">
+      <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+      <a routerLink="/upload" routerLinkActive="active" class="upload-btn">Upload</a>
+    </nav>
+  </header>
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>
