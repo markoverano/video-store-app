@@ -14,6 +14,7 @@ builder.Services.AddDbContext<VideoContext>(options =>
     options.UseSqlServer(connectionString));
 
 builder.Services.AddScoped<IVideoRepository, VideoRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
 builder.Services.AddCors(options =>
 {
