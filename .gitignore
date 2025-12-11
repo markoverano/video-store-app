@@ -2,3 +2,9 @@ backend/bin/
 backend/obj/
 backend/Properties/launchSettings.json
 .vs/
+backend.Tests/obj/
+backend/uploads/
+*.sln
+*.editorconfig
+video-store-frontend/package-lock.json
+backend.Tests/bin/
