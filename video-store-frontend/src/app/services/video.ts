@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class VideoService {
-  private readonly videosEndpoint = '/videos';
+  private readonly videosEndpoint = '/video';
 
   constructor(private httpClient: HttpClient) {}
 
@@ -42,7 +42,7 @@ export class VideoService {
     categoryIds.forEach(categoryId => {
       formData.append('categoryIds', categoryId.toString());
     });
-    formData.append('file', videoFile, videoFile.name);
+    formData.append('videoFile', videoFile, videoFile.name);
 
     this.logRequest('POST', this.videosEndpoint, {
       title,

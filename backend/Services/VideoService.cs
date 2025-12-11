@@ -159,6 +159,40 @@ namespace VideoStore.Backend.Services
             return nameWithoutExtension + extension;
         }
 
+        public async Task<(Stream? FileStream, string ContentType, string FileName)?> GetVideoStreamAsync(int id)
+        {
+            var video = await _videoRepository.GetByIdAsync(id);
+            if (video == null)
+            {
+                return null;
+            }
+
+            var fullPath = Path.Combine(Directory.GetCurrentDirectory(), video.FilePath);
+            if (!File.Exists(fullPath))
+            {
+                _logger.LogWarning("Video file not found: {FilePath}", fullPath);
+                return null;
+            }
+
+            var contentType = GetContentType(video.FilePath);
+            var fileName = Path.GetFileName(video.FilePath);
+            var fileStream = new FileStream(fullPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+
+            return (fileStream, contentType, fileName);
+        }
+
+        private static string GetContentType(string filePath)
+        {
+            var extension = Path.GetExtension(filePath).ToLowerInvariant();
+            return extension switch
+            {
+                ".mp4" => "video/mp4",
+                ".avi" => "video/x-msvideo",
+                ".mov" => "video/quicktime",
+                _ => "application/octet-stream"
+            };
+        }
+
         private static VideoDTO MapToDTO(Video video)
         {
             return new VideoDTO

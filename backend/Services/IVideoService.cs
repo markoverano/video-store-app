@@ -8,5 +8,6 @@ namespace VideoStore.Backend.Services
         Task<IEnumerable<VideoDTO>> GetAllVideosAsync();
         Task<VideoDTO?> GetVideoByIdAsync(int id);
         Task<VideoUploadResponseDTO> UploadVideoAsync(VideoUploadDTO uploadDTO, IFormFile videoFile);
+        Task<(Stream? FileStream, string ContentType, string FileName)?> GetVideoStreamAsync(int id);
     }
 }

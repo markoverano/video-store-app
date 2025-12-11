@@ -99,5 +99,27 @@ namespace VideoStore.Backend.Controllers
                 return StatusCode(500, new { message = "An error occurred while uploading the video" });
             }
         }
+
+        [HttpGet("{id}/stream")]
+        public async Task<IActionResult> StreamVideo(int id)
+        {
+            var streamResult = await _videoService.GetVideoStreamAsync(id);
+
+            if (streamResult == null)
+            {
+                return NotFound(new { message = "Video not found" });
+            }
+
+            var (fileStream, contentType, fileName) = streamResult.Value;
+
+            if (fileStream == null)
+            {
+                return NotFound(new { message = "Video file not found" });
+            }
+
+            Response.Headers.Append("Accept-Ranges", "bytes");
+
+            return File(fileStream, contentType, enableRangeProcessing: true);
+        }
     }
 }

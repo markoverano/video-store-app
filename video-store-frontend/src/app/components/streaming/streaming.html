@@ -1,1 +1,33 @@
-<p>streaming works!</p>
+<div class="streaming-container">
+  <div class="header">
+    <button class="back-button" (click)="navigateToHome()">← Back to Home</button>
+  </div>
+
+  <div *ngIf="isLoading" class="loading">Loading video...</div>
+
+  <div *ngIf="errorMessage" class="error-message">
+    <p>{{ errorMessage }}</p>
+    <button class="back-button" (click)="navigateToHome()">Return to Home</button>
+  </div>
+
+  <div *ngIf="video && !isLoading && !errorMessage" class="video-content">
+    <div class="video-player-container">
+      <video
+        class="video-player"
+        [src]="videoStreamUrl"
+        controls
+        autoplay
+        (error)="onVideoError()">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+
+    <div class="video-metadata">
+      <h1 class="video-title">{{ video.title }}</h1>
+      <p class="video-description">{{ video.description }}</p>
+      <div class="video-categories">
+        <span class="category-label">{{ formatCategories(video.categories) }}</span>
+      </div>
+    </div>
+  </div>
+</div>
