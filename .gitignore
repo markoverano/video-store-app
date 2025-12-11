@@ -8,3 +8,4 @@ backend/uploads/
 *.editorconfig
 video-store-frontend/package-lock.json
 backend.Tests/bin/
+package-lock.json

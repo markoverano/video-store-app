@@ -1,9 +1,3 @@
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using Moq;
-using VideoStore.Backend.Services;
-using Xunit;
-
 namespace VideoStore.Backend.Tests
 {
     public class FileValidationServiceTests
