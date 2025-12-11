@@ -1,1 +1,49 @@
-<p>home works!</p>
+<div class="home-container">
+  <app-loading-spinner
+    [isLoading]="isLoading"
+    loadingText="Loading videos...">
+  </app-loading-spinner>
+
+  <div class="error-message" *ngIf="errorMessage && !isLoading">
+    <p>{{ errorMessage }}</p>
+    <button class="retry-button" (click)="loadVideos()">Retry</button>
+  </div>
+
+  <div class="empty-state" *ngIf="!isLoading && !errorMessage && videos.length === 0">
+    <p>No videos available yet.</p>
+    <p>Be the first to upload a video!</p>
+    <a routerLink="/upload" class="upload-link">Upload Video</a>
+  </div>
+
+  <div class="video-grid" *ngIf="!isLoading && !errorMessage && videos.length > 0">
+    <div
+      class="video-card"
+      *ngFor="let video of videos"
+      (click)="navigateToStreaming(video.id)"
+      (keydown.enter)="navigateToStreaming(video.id)"
+      tabindex="0"
+      role="button"
+      [attr.aria-label]="'Play ' + video.title">
+
+      <div class="thumbnail-container">
+        <img
+          [src]="video.thumbnailUrl"
+          [alt]="video.title"
+          [title]="video.title"
+          class="thumbnail"
+          loading="lazy">
+        <div class="play-overlay">
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div class="video-info">
+        <h3 class="video-title" [title]="video.title">{{ video.title }}</h3>
+        <p class="video-description">{{ video.description | truncate:160 }}</p>
+        <div class="video-categories">
+          <span class="category-label">{{ formatCategories(video.categories) }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
