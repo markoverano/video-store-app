@@ -10,17 +10,20 @@ namespace VideoStore.Backend.Services
     {
         private readonly IVideoRepository _videoRepository;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IThumbnailService _thumbnailService;
         private readonly IConfiguration _configuration;
         private readonly ILogger<VideoService> _logger;
 
         public VideoService(
             IVideoRepository videoRepository,
             ICategoryRepository categoryRepository,
+            IThumbnailService thumbnailService,
             IConfiguration configuration,
             ILogger<VideoService> logger)
         {
             _videoRepository = videoRepository;
             _categoryRepository = categoryRepository;
+            _thumbnailService = thumbnailService;
             _configuration = configuration;
             _logger = logger;
         }
@@ -58,12 +61,15 @@ namespace VideoStore.Backend.Services
 
             _logger.LogInformation("Video file saved: {FilePath}", filePath);
 
+            var relativeVideoPath = Path.Combine(uploadPath, uniqueFileName);
+            var thumbnailPath = await GenerateThumbnailSafelyAsync(relativeVideoPath);
+
             var video = new Video
             {
                 Title = uploadDTO.Title,
                 Description = uploadDTO.Description,
-                FilePath = Path.Combine(uploadPath, uniqueFileName),
-                ThumbnailPath = string.Empty,
+                FilePath = relativeVideoPath,
+                ThumbnailPath = thumbnailPath,
                 CreatedDate = DateTime.UtcNow
             };
 
@@ -91,6 +97,21 @@ namespace VideoStore.Backend.Services
                 Message = "Video uploaded successfully",
                 ThumbnailUrl = createdVideo.ThumbnailPath
             };
+        }
+
+        private async Task<string> GenerateThumbnailSafelyAsync(string videoFilePath)
+        {
+            try
+            {
+                var thumbnailPath = await _thumbnailService.GenerateThumbnailAsync(videoFilePath);
+                _logger.LogInformation("Thumbnail generated successfully: {ThumbnailPath}", thumbnailPath);
+                return thumbnailPath;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to generate thumbnail for video: {VideoPath}. Video will be saved without thumbnail.", videoFilePath);
+                return string.Empty;
+            }
         }
 
         private async Task<List<Category>> GetOrCreateCategoriesAsync(List<int> categoryIds, List<string> newCategoryNames)
