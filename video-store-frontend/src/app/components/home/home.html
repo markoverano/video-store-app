@@ -25,16 +25,16 @@
       role="button"
       [attr.aria-label]="'Play ' + video.title">
 
-      <div class="thumbnail-container">
+      <div class="thumbnail-container" [attr.data-title]="video.title">
         <img
           [src]="video.thumbnailUrl"
           [alt]="video.title"
-          [title]="video.title"
           class="thumbnail"
           loading="lazy">
         <div class="play-overlay">
           <span class="play-icon">&#9658;</span>
         </div>
+        <div class="thumbnail-tooltip">{{ video.title }}</div>
       </div>
 
       <div class="video-info">

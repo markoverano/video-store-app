@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { takeUntil, finalize } from 'rxjs/operators';
 import { Video } from '../../models';
 import { VideoService } from '../../services/video';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -42,12 +43,23 @@ export class Home implements OnInit, OnDestroy {
       )
       .subscribe({
         next: (videos) => {
-          this.videos = videos;
+          this.videos = videos.map(video => ({
+            ...video,
+            thumbnailUrl: this.buildThumbnailUrl(video.thumbnailUrl)
+          }));
         },
         error: (error) => {
           this.errorMessage = error.message || 'Failed to load videos. Please try again.';
         }
       });
+  }
+
+  private buildThumbnailUrl(relativePath: string): string {
+    if (!relativePath) {
+      return '';
+    }
+    const baseUrl = environment.apiUrl.replace('/api', '');
+    return `${baseUrl}${relativePath}`;
   }
 
   navigateToStreaming(videoId: number): void {

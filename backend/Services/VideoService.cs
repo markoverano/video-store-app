@@ -90,12 +90,16 @@ namespace VideoStore.Backend.Services
 
             _logger.LogInformation("Video record created with ID: {VideoId}", createdVideo.Id);
 
+            var responseThumbnailUrl = string.IsNullOrEmpty(createdVideo.ThumbnailPath)
+                ? string.Empty
+                : "/" + createdVideo.ThumbnailPath.Replace("\\", "/");
+
             return new VideoUploadResponseDTO
             {
                 Id = createdVideo.Id,
                 Title = createdVideo.Title,
                 Message = "Video uploaded successfully",
-                ThumbnailUrl = createdVideo.ThumbnailPath
+                ThumbnailUrl = responseThumbnailUrl
             };
         }
 
@@ -184,12 +188,16 @@ namespace VideoStore.Backend.Services
 
         private static VideoDTO MapToDTO(Video video)
         {
+            var thumbnailUrl = string.IsNullOrEmpty(video.ThumbnailPath)
+                ? string.Empty
+                : "/" + video.ThumbnailPath.Replace("\\", "/");
+
             return new VideoDTO
             {
                 Id = video.Id,
                 Title = video.Title,
                 Description = video.Description,
-                ThumbnailUrl = video.ThumbnailPath,
+                ThumbnailUrl = thumbnailUrl,
                 CreatedDate = video.CreatedDate,
                 Categories = video.VideoCategories
                     .Select(vc => new CategoryDTO
